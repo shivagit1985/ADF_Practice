@@ -1,0 +1,55 @@
+{
+	"name": "Ds_blob_source_dynamic",
+	"properties": {
+		"description": "Ds_blob_source_dynamic",
+		"linkedServiceName": {
+			"referenceName": "Ls_Blob_source_dynamic",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"LS_blob_Storage_account_name": "storagebademo",
+				"LS_blob_Endpoint_suffix": "core.windows.net"
+			}
+		},
+		"parameters": {
+			"ds_source_container": {
+				"type": "string"
+			},
+			"ds_source_directrory": {
+				"type": "string"
+			},
+			"ds_source_filename": {
+				"type": "string"
+			},
+			"LS_blob_Storage_account_name": {
+				"type": "string"
+			},
+			"LS_blob_Endpoint_suffix": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().ds_source_filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ds_source_directrory",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().ds_source_container",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

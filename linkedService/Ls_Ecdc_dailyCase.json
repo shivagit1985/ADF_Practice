@@ -1,0 +1,14 @@
+{
+	"name": "Ls_Ecdc_dailyCase",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "Daily cases EcDc data",
+		"annotations": [],
+		"type": "HttpServer",
+		"typeProperties": {
+			"url": "https://opendata.ecdc.europa.eu/covid19/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

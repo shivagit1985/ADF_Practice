@@ -1,0 +1,23 @@
+{
+	"name": "Ds_ECDC_dailycase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_Ecdc_dailyCase",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation",
+				"relativeUrl": "nationalcasedeath_eueea_daily_ei/csv/data.csv"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

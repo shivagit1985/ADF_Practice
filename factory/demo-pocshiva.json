@@ -1,0 +1,9 @@
+{
+	"name": "demo-pocshiva",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ea7974fc-429f-4fd2-8bd6-9a18953f2c77",
+		"tenantId": "4803b1af-5ecf-4dd3-9e80-d408eac59e38"
+	}
+}

@@ -1,0 +1,62 @@
+{
+	"name": "Ds_SQl_ECDC_daily_staging",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_traget_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "dateRep",
+				"type": "nvarchar"
+			},
+			{
+				"name": "day",
+				"type": "nvarchar"
+			},
+			{
+				"name": "month",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Year",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cases",
+				"type": "nvarchar"
+			},
+			{
+				"name": "deathsm",
+				"type": "nvarchar"
+			},
+			{
+				"name": "countriesAndTerritories",
+				"type": "nvarchar"
+			},
+			{
+				"name": "geoId",
+				"type": "varchar"
+			},
+			{
+				"name": "countryterritoryCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "popData2020",
+				"type": "nvarchar"
+			},
+			{
+				"name": "continentExp",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "EcDC_data_Country_wise_staging"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,50 @@
+{
+	"name": "DS_DatalakeGen2_traget_dynamic",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_Gen2_target_dynamic",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"LS_DatalakeGen2_traget_dynamic": "https://targetbagen2.dfs.core.windows.net"
+			}
+		},
+		"parameters": {
+			"Ds_target_filename": {
+				"type": "string"
+			},
+			"Ds_target_Directory": {
+				"type": "string"
+			},
+			"DS_target_file_path": {
+				"type": "string"
+			},
+			"LS_target_url": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().Ds_target_filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@concat(formatDateTime(utcnow(),'yyyy'),'/',formatDateTime(utcnow(),'MM'),'/',formatDateTime(utcnow(),'dd')) ",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().DS_target_file_path",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

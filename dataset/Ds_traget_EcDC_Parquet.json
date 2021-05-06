@@ -1,0 +1,21 @@
+{
+	"name": "Ds_traget_EcDC_Parquet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_Destination_Gen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "EcDC_case_count.Parquet",
+				"fileSystem": "target-ecdc-case-count"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

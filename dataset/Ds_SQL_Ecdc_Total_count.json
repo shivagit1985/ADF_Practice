@@ -1,0 +1,17 @@
+{
+	"name": "Ds_SQL_Ecdc_Total_count",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Ls_traget_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Case_count_by_Country"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

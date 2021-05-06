@@ -1,0 +1,265 @@
+{
+	"name": "dynamic_pipeline_source_to_target",
+	"properties": {
+		"description": "dynamic_pipeline_source_to_target",
+		"activities": [
+			{
+				"name": "Check_file_exist",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Ds_blob_source_dynamic",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_source_container": {
+								"value": "@pipeline().parameters.source_container",
+								"type": "Expression"
+							},
+							"ds_source_directrory": {
+								"value": "@pipeline().parameters.source_directory",
+								"type": "Expression"
+							},
+							"ds_source_filename": {
+								"value": "@pipeline().parameters.source_file_name",
+								"type": "Expression"
+							},
+							"LS_blob_Storage_account_name": {
+								"value": "@pipeline().parameters.blob_Storage_account_name",
+								"type": "Expression"
+							},
+							"LS_blob_Endpoint_suffix": {
+								"value": "@pipeline().parameters.blob_Endpoint_suffix",
+								"type": "Expression"
+							}
+						}
+					},
+					"fieldList": [
+						"exists"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "DelimitedTextReadSettings"
+					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Check_file_exist",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@activity('Check_file_exist').output.exists",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Add_error_detais_to_db",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[usp_insert_pipline_error_details]",
+								"storedProcedureParameters": {
+									"contrainername": {
+										"value": {
+											"value": "@pipeline().parameters.blob_Storage_account_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"filename_source": {
+										"value": {
+											"value": "@pipeline().parameters.source_file_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"pipelineName": {
+										"value": {
+											"value": "@pipeline().Pipeline",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "Ls_traget_db",
+								"type": "LinkedServiceReference"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Copy_data_dynamic_source_to_destnation_copy1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Ds_blob_source_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_source_container": {
+											"value": "@pipeline().parameters.source_container",
+											"type": "Expression"
+										},
+										"ds_source_directrory": {
+											"value": "@pipeline().parameters.source_directory",
+											"type": "Expression"
+										},
+										"ds_source_filename": {
+											"value": "@pipeline().parameters.source_file_name",
+											"type": "Expression"
+										},
+										"LS_blob_Storage_account_name": {
+											"value": "@pipeline().parameters.blob_Storage_account_name",
+											"type": "Expression"
+										},
+										"LS_blob_Endpoint_suffix": {
+											"value": "@pipeline().parameters.blob_Endpoint_suffix",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DS_DatalakeGen2_traget_dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"Ds_target_filename": {
+											"value": "@pipeline().parameters.source_file_name",
+											"type": "Expression"
+										},
+										"Ds_target_Directory": {
+											"value": "@pipeline().parameters.target_Directory",
+											"type": "Expression"
+										},
+										"DS_target_file_path": {
+											"value": "@pipeline().parameters.target_file_path",
+											"type": "Expression"
+										},
+										"LS_target_url": {
+											"value": "@pipeline().parameters.target_url_name",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"target_url_name": {
+				"type": "string",
+				"defaultValue": "https://targetbagen2.dfs.core.windows.net"
+			},
+			"target_file_path": {
+				"type": "string",
+				"defaultValue": "dynamic-target"
+			},
+			"target_Directory": {
+				"type": "string",
+				"defaultValue": "Thanksbaba"
+			},
+			"target_file_name": {
+				"type": "string",
+				"defaultValue": "baba.csv"
+			},
+			"source_container": {
+				"type": "string",
+				"defaultValue": "source"
+			},
+			"source_directory": {
+				"type": "string",
+				"defaultValue": "FTP_source"
+			},
+			"source_file_name": {
+				"type": "string",
+				"defaultValue": "data_ftp_20.csv"
+			},
+			"blob_Storage_account_name": {
+				"type": "string",
+				"defaultValue": "storagebademo"
+			},
+			"blob_Endpoint_suffix": {
+				"type": "string",
+				"defaultValue": "core.windows.net"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-05-05T16:16:06Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
